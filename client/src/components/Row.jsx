@@ -5,7 +5,7 @@ const Row = props => {
   const renderedSquares = [];
   
   for (let i = 0; i < 7; i++) {
-    renderedSquares.push(<Square key={`${props.y}${i}`} x={i} y={props.y} />);
+    renderedSquares.push(<Square key={`${props.y}${i}`} x={i} y={props.y} handleClick={props.handleClick} />);
   }
 
   return (
