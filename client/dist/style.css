@@ -5,6 +5,10 @@
   width: 70vh;
 }
 
+.square {
+  border-radius: 50%;
+}
+
 .col0 {
   grid-column: 1;
   border: 1px solid cornflowerblue;

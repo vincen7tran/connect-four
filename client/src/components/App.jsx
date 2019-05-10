@@ -14,20 +14,24 @@ class App extends React.Component {
 
   handleClick = (e) => {
     let id = e.target.id;
-    let square = this.gravity(id);
-    this.markSpace(square);
+    this.gravity(id);
   }
 
   gravity = (id) => {
-    let numID = parseInt(id);
-    
-    while (numID > numID % 10 + 10) {
-      if (this.state[numID - 10] !== '') break;
-      numID = numID - 10;
-    }
-    let square = document.getElementById(`${numID}`);
+    // let numID = parseInt(id);
 
-    return square;
+    // while (numID > numID % 10 + 10) {
+    //   if (this.state[numID - 10] !== '') break;
+    //   numID = numID - 10;
+    // }
+    let numID = parseInt(id) % 10 + 10;
+    while (numID < 67) {
+      if (this.state[numID] === '') break;
+      numID += 10;
+    }
+
+    if (numID > 66) alert('Column Full!');
+    else this.markSpace(document.getElementById(`${numID}`));
   }
 
   markSpace = (square) => {
@@ -36,7 +40,65 @@ class App extends React.Component {
     } else {
       square.style.backgroundColor = 'black' ;
     }
-    this.setState({[square.id]: this.state.playerOneTurn, playerOneTurn: !this.state.playerOneTurn});
+    this.setState({[square.id]: this.state.playerOneTurn, playerOneTurn: !this.state.playerOneTurn},
+      () => {
+        this.checkRows();
+        this.checkColumns();
+      });
+  }
+
+  checkRows = () => {
+    let playerOne = 0;
+    let playerTwo = 0;
+    for (let i = 10; i < 70; i += 10) {
+      for (let j = 0; j < 7; j++) {
+        if (this.state[i+j] === true) {
+          playerOne++;
+          playerTwo = 0;
+        } else if (this.state[i+j] === false) {
+          playerTwo++;
+          playerOne = 0;
+        } else {
+          playerOne = 0;
+          playerTwo = 0;
+        }
+        if (playerOne === 4) {
+          return this.victory('Red Wins!');
+        }
+        if (playerTwo === 4) {
+          return this.victory('Black Wins!');
+        }
+      }
+    }
+  }
+
+  checkColumns = () => {
+    let playerOne = 0;
+    let playerTwo = 0;
+    for (let i = 0; i < 7; i++) {
+      for (let j = 10; j < 70; j += 10) {
+        if (this.state[i+j] === true) {
+          playerOne++;
+          playerTwo = 0;
+        } else if (this.state[i+j] === false) {
+          playerTwo++;
+          playerOne = 0;
+        } else {
+          playerOne = 0;
+          playerTwo = 0;
+        }
+        if (playerOne === 4) {
+          return this.victory('Red Wins!');
+        }
+        if (playerTwo === 4) {
+          return this.victory('Black Wins!');
+        }
+      }
+    }
+  }
+
+  victory = (player) => {
+    console.log(player);
   }
 
   render() {
