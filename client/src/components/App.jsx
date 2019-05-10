@@ -4,6 +4,8 @@ import Row from './Row.jsx';
 class App extends React.Component {
   state = {
     playerOneTurn: true,
+    playerOneWins: 0,
+    playerTwoWins: 0,
     '60': '', '61': '', '62': '', '63': '', '64': '', '65': '', '66': '',
     '50': '', '51': '', '52': '', '53': '', '54': '', '55': '', '56': '',
     '40': '', '41': '', '42': '', '43': '', '44': '', '45': '', '46': '',
@@ -63,10 +65,10 @@ class App extends React.Component {
           playerTwo = 0;
         }
         if (playerOne === 4) {
-          return this.victory('Red Wins!');
+          return this.victory(0);
         }
         if (playerTwo === 4) {
-          return this.victory('Black Wins!');
+          return this.victory(1);
         }
       }
     }
@@ -88,17 +90,23 @@ class App extends React.Component {
           playerTwo = 0;
         }
         if (playerOne === 4) {
-          return this.victory('Red Wins!');
+          return this.victory(0);
         }
         if (playerTwo === 4) {
-          return this.victory('Black Wins!');
+          return this.victory(1);
         }
       }
     }
   }
 
-  victory = (player) => {
-    console.log(player);
+  victory = (status) => {
+   if (status) {
+     console.log('Black Wins!');
+     this.setState({playerTwoWins: ++this.state.playerTwoWins});
+   } else {
+    console.log('Red Wins!');
+    this.setState({playerOneWins: ++this.state.playerOneWins});
+   }
   }
 
   render() {
@@ -110,7 +118,15 @@ class App extends React.Component {
 
     return (
       <div>
-        {renderedRows}
+        <div>
+          {renderedRows}
+        </div>
+        <div>
+          {`Player One Wins: ${this.state.playerOneWins}`}
+        </div>
+        <div>
+          {`Player Two Wins: ${this.state.playerTwoWins}`}
+        </div>
       </div>
     );
   }
